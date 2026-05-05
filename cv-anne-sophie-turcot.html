@@ -6,17 +6,28 @@
 <style>
   @page { size: 8.5in 11in; margin: 0.4in; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
 
   html, body { background: #fff; }
   body {
     font-family: Georgia, 'Times New Roman', serif;
     color: #222;
-    width: 7.7in;
+    max-width: 7.7in;
     margin: 0 auto;
     padding: 0.35in 0.3in;
     font-size: 11px;
     line-height: 1.45;
+  }
+
+  @media print {
+    body { padding: 0; max-width: none; width: auto; }
   }
 
   h1 { text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 4px; }
@@ -54,11 +65,13 @@
   .card-role { font-size: 11px; color: #534AB7; margin-top: 2px; }
   .badge {
     font-size: 9.5px;
-    background: #EEEDFE;
-    color: #3C3489;
+    background: #EEEDFE !important;
+    color: #3C3489 !important;
     padding: 2px 8px;
     border-radius: 20px;
     white-space: nowrap;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
   .card-desc { font-size: 11px; color: #555; margin-top: 5px; line-height: 1.45; }
 
@@ -77,10 +90,12 @@
   .competences { display: flex; flex-wrap: wrap; gap: 6px; }
   .competence-tag {
     font-size: 10.5px;
-    background: #EEEDFE;
-    color: #3C3489;
+    background: #EEEDFE !important;
+    color: #3C3489 !important;
     padding: 3px 10px;
     border-radius: 20px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 </style>
 </head>
