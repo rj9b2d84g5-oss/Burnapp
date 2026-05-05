@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>CV - Anne-Sophie Turcot</title>
+<style>
+  @media print {
+    body { margin: 0; padding: 0; }
+    .no-print { display: none; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; color: #222; background: #fff; padding: 40px; max-width: 780px; margin: auto; font-size: 14px; line-height: 1.6; }
+  h1 { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 6px; }
+  .contact { text-align: center; font-size: 13px; color: #555; line-height: 1.9; margin-bottom: 24px; }
+  .section-title { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .section-title::after { content: ''; flex: 1; height: 0.5px; background: #ccc; }
+  .card { border: 0.5px solid #ddd; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 4px; }
+  .card-title { font-weight: bold; font-size: 15px; }
+  .card-role { font-size: 13px; color: #534AB7; margin-top: 4px; }
+  .badge { font-size: 11px; background: #EEEDFE; color: #3C3489; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+  .card-desc { font-size: 13px; color: #555; margin-top: 10px; line-height: 1.6; }
+  .formation-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 0.5px solid #eee; }
+  .formation-row:last-child { border-bottom: none; }
+  .formation-title { font-weight: bold; font-size: 14px; }
+  .formation-lieu { font-size: 13px; color: #888; margin-top: 2px; }
+  .formation-year { font-size: 12px; color: #aaa; }
+  .competences { display: flex; flex-wrap: wrap; gap: 8px; }
+  .competence-tag { font-size: 13px; background: #EEEDFE; color: #3C3489; padding: 5px 14px; border-radius: 20px; }
+  .section { margin-bottom: 22px; }
+  .print-btn { display: block; margin: 0 auto 24px; background: #534AB7; color: #fff; border: none; padding: 10px 28px; border-radius: 20px; font-size: 14px; cursor: pointer; font-family: Georgia, serif; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Imprimer / Enregistrer en PDF</button>
+
+<h1>Anne-Sophie Turcot</h1>
+<div class="contact">
+  491 ch. de la Rivière L'Assomption, St-Félix-de-Valois<br>
+  (450) 421-3088<br>
+  annesophie.turcot@icloud.com
+</div>
+
+<!-- EXPÉRIENCES -->
+<div class="section">
+  <div class="section-title">Expériences</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">École primaire de St-Joseph</div>
+        <div class="card-role">Enseignante en éducation physique</div>
+      </div>
+      <span class="badge">Nov. 2024 – aujourd'hui</span>
+    </div>
+    <div class="card-desc">Enseignement en éducation physique auprès des élèves du préscolaire, du primaire régulier et en adaptation scolaire.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Signalisation Legault</div>
+        <div class="card-role">Adjointe administrative</div>
+      </div>
+      <span class="badge">Juil. 2023 – Juil. 2024</span>
+    </div>
+    <div class="card-desc">Gestion du personnel, production des paies et traitement des paiements. Rédaction et révision de documents (correspondances, factures, présentations, rapports). Coordination des communications internes et externes, gestion des réunions et inventaire des fournitures de bureau.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Orange Paysagement</div>
+        <div class="card-role">Adjointe administrative</div>
+      </div>
+      <span class="badge">Avr. 2022 – Fév. 2023</span>
+    </div>
+    <div class="card-desc">Mêmes responsabilités qu'au poste précédent, avec en supplément la gestion des appels téléphoniques et des courriels entrants.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Les Pépinières Trussart LTÉE</div>
+        <div class="card-role">Commis comptable</div>
+      </div>
+      <span class="badge">Avr. 2020 – Jan. 2022</span>
+    </div>
+    <div class="card-desc">Préparation des factures, suivi des dépenses et production de rapports avec QuickBooks. Suivi des états de compte clients et accueil des fournisseurs.</div>
+  </div>
+</div>
+
+<!-- FORMATION -->
+<div class="section">
+  <div class="section-title">Formation</div>
+  <div class="formation-row">
+    <div>
+      <div class="formation-title">DEP en comptabilité</div>
+      <div class="formation-lieu">Centre de formation de l'Argile</div>
+    </div>
+    <span class="formation-year">2020</span>
+  </div>
+  <div class="formation-row">
+    <div>
+      <div class="formation-title">Stage en comptabilité</div>
+      <div class="formation-lieu">Service Fiscal Lanaudière</div>
+    </div>
+    <span class="formation-year">2020</span>
+  </div>
+  <div class="formation-row">
+    <div>
+      <div class="formation-title">Diplôme d'études secondaires</div>
+      <div class="formation-lieu">École Secondaire Thérèse-Martin</div>
+    </div>
+    <span class="formation-year">2017</span>
+  </div>
+</div>
+
+<!-- COMPÉTENCES -->
+<div class="section">
+  <div class="section-title">Compétences</div>
+  <div class="competences">
+    <span class="competence-tag">Gestion de classe</span>
+    <span class="competence-tag">Différenciation pédagogique</span>
+    <span class="competence-tag">Adaptation scolaire</span>
+    <span class="competence-tag">Communication avec les familles</span>
+    <span class="competence-tag">Planification de cours</span>
+    <span class="competence-tag">Travail en équipe</span>
+  </div>
+</div>
+
+</body>
+</html>
