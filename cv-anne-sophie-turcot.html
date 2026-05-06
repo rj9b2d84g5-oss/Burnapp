@@ -20,20 +20,31 @@
     font-family: Georgia, 'Times New Roman', serif;
     color: #222;
     max-width: 7.7in;
+    min-height: 10.2in;
     margin: 0 auto;
     padding: 0.4in 0.3in;
-    font-size: 13px;
-    line-height: 1.55;
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
   }
 
   @media print {
-    body { padding: 0; max-width: none; width: auto; }
+    body { padding: 0; max-width: none; width: auto; min-height: 100vh; }
   }
 
-  h1 { text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 8px; }
-  .contact { text-align: center; font-size: 13px; color: #555; line-height: 1.7; margin-bottom: 28px; }
+  h1 { text-align: center; font-size: 30px; font-weight: bold; margin-bottom: 10px; }
+  .contact { text-align: center; font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 32px; }
 
-  .section { margin-bottom: 22px; }
+  .sections-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .section { margin-bottom: 26px; }
+  .section:last-child { margin-bottom: 0; }
   .section-title {
     font-size: 11px;
     font-weight: bold;
@@ -50,10 +61,11 @@
   .card {
     border: 0.5px solid #ddd;
     border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
     page-break-inside: avoid;
   }
+  .card:last-child { margin-bottom: 0; }
   .card-header {
     display: flex;
     justify-content: space-between;
@@ -107,6 +119,8 @@
   (450) 421-3088<br>
   annesophie.turcot@icloud.com
 </div>
+
+<div class="sections-wrapper">
 
 <div class="section">
   <div class="section-title">Expériences</div>
@@ -191,6 +205,8 @@
     <span class="competence-tag">Planification de cours</span>
     <span class="competence-tag">Travail en équipe</span>
   </div>
+</div>
+
 </div>
 
 </body>
