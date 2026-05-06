@@ -3,162 +3,182 @@ import math
 
 W, H = 680, 980
 BLUE = (90, 171, 219)
-BLUE_DARK = (50, 110, 160)
+BLUE_SOFT = (220, 238, 248)
 GOLD = (212, 168, 0)
-GOLD_LIGHT = (240, 205, 90)
-CREAM = (253, 250, 240)
-INK = (40, 50, 70)
+GOLD_SOFT = (245, 220, 120)
+WHITE = (255, 255, 255)
+INK = (60, 70, 85)
+INK_SOFT = (130, 140, 155)
 
-img = Image.new("RGB", (W, H), CREAM)
+img = Image.new("RGB", (W, H), WHITE)
 d = ImageDraw.Draw(img)
 
-# Subtle background gradient
-for y in range(H):
-    t = y / H
-    r = int(253 - t * 8)
-    g = int(250 - t * 6)
-    b = int(240 - t * 4)
-    d.line([(0, y), (W, y)], fill=(r, g, b))
+# Outer thin gold frame
+d.rectangle([18, 18, W - 18, H - 18], outline=GOLD, width=2)
+d.rectangle([24, 24, W - 24, H - 24], outline=GOLD, width=1)
 
-# Outer gold border
-for i in range(6):
-    d.rectangle([20 + i, 20 + i, W - 20 - i, H - 20 - i],
-                outline=GOLD, width=1)
-# Inner thin blue border
-d.rectangle([34, 34, W - 34, H - 34], outline=BLUE, width=2)
-d.rectangle([40, 40, W - 40, H - 40], outline=GOLD, width=1)
-
-# Decorative corner ornaments
-def corner(cx, cy, flip_x=1, flip_y=1):
-    for r, c in [(28, GOLD), (22, GOLD_LIGHT), (14, GOLD)]:
-        d.arc([cx - r, cy - r, cx + r, cy + r],
-              start=180 if flip_x*flip_y > 0 else 90,
-              end=270 if flip_x*flip_y > 0 else 180,
-              fill=c, width=2)
-    # small dots
-    for k in range(3):
-        d.ellipse([cx + flip_x*(8 + k*8) - 2, cy + flip_y*(8 + k*8) - 2,
-                   cx + flip_x*(8 + k*8) + 2, cy + flip_y*(8 + k*8) + 2],
-                  fill=GOLD)
-
-corner(60, 60, 1, 1)
-corner(W - 60, 60, -1, 1)
-corner(60, H - 60, 1, -1)
-corner(W - 60, H - 60, -1, -1)
-
-# Top blue banner
-d.rectangle([60, 90, W - 60, 170], fill=BLUE)
-d.rectangle([60, 90, W - 60, 170], outline=GOLD, width=3)
-# Banner ornaments
-d.line([(80, 130), (140, 130)], fill=GOLD_LIGHT, width=2)
-d.line([(W - 140, 130), (W - 80, 130)], fill=GOLD_LIGHT, width=2)
-for x in [80, 140, W - 140, W - 80]:
-    d.ellipse([x - 3, 127, x + 3, 133], fill=GOLD)
-
-# Fonts
 def font(size, bold=False, italic=False):
     if bold and italic:
-        path = "/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf"
+        p = "/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf"
     elif bold:
-        path = "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf"
+        p = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
     elif italic:
-        path = "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf"
+        p = "/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf"
     else:
-        path = "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf"
-    return ImageFont.truetype(path, size)
+        p = "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
+    return ImageFont.truetype(p, size)
+
+def serif(size, bold=False):
+    if bold:
+        return ImageFont.truetype(
+            "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf", size)
+    return ImageFont.truetype(
+        "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf", size)
 
 def cx_text(y, text, fnt, fill):
     bbox = d.textbbox((0, 0), text, font=fnt)
     tw = bbox[2] - bbox[0]
     d.text(((W - tw) // 2, y), text, font=fnt, fill=fill)
 
-# Header text
-cx_text(102, "CERTIFICAT D'EXCELLENCE", font(26, bold=True), CREAM)
-cx_text(140, "Record scolaire", font(18, italic=True), GOLD_LIGHT)
+# === TOP BLUE HEADER ===
+header_top = 35
+header_h = 145
+d.rectangle([35, header_top, W - 35, header_top + header_h], fill=BLUE)
 
-# Medallion
-cx, cy = W // 2, 260
-# Outer gold ring
-for r, c, w in [(70, GOLD, 4), (62, GOLD_LIGHT, 2), (56, GOLD, 2)]:
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=c, width=w)
-# Inner blue disc
-d.ellipse([cx - 50, cy - 50, cx + 50, cy + 50], fill=BLUE)
-d.ellipse([cx - 50, cy - 50, cx + 50, cy + 50], outline=GOLD, width=2)
-# Star inside
-def star(cx, cy, r_out, r_in, points=5, fill=GOLD):
+# Stars in header
+def star(cx, cy, r_out, r_in, fill, points=5):
     pts = []
     for i in range(points * 2):
         ang = -math.pi / 2 + i * math.pi / points
         r = r_out if i % 2 == 0 else r_in
         pts.append((cx + r * math.cos(ang), cy + r * math.sin(ang)))
-    d.polygon(pts, fill=fill, outline=GOLD_LIGHT)
-star(cx, cy, 32, 14, 5, GOLD)
-# Ribbon tails below medallion
-d.polygon([(cx - 35, cy + 55), (cx - 60, cy + 130),
-           (cx - 40, cy + 115), (cx - 25, cy + 130),
-           (cx - 15, cy + 70)], fill=BLUE_DARK)
-d.polygon([(cx + 35, cy + 55), (cx + 60, cy + 130),
-           (cx + 40, cy + 115), (cx + 25, cy + 130),
-           (cx + 15, cy + 70)], fill=BLUE_DARK)
-d.polygon([(cx - 35, cy + 55), (cx - 60, cy + 130),
-           (cx - 50, cy + 100), (cx - 20, cy + 60)], fill=BLUE)
-d.polygon([(cx + 35, cy + 55), (cx + 60, cy + 130),
-           (cx + 50, cy + 100), (cx + 20, cy + 60)], fill=BLUE)
+    d.polygon(pts, fill=fill)
 
-# Body
-y = 430
-cx_text(y, "Décerné à", font(20, italic=True), INK)
-y += 50
-cx_text(y, "Aaden", font(56, bold=True), BLUE_DARK)
-# Underline flourish
-y += 78
-d.line([(W//2 - 130, y), (W//2 + 130, y)], fill=GOLD, width=2)
-d.ellipse([W//2 - 4, y - 4, W//2 + 4, y + 4], fill=GOLD)
+# Left stars
+star(85, header_top + 60, 14, 6, GOLD)
+star(118, header_top + 80, 9, 4, GOLD)
+# Right stars
+star(W - 85, header_top + 60, 14, 6, GOLD)
+star(W - 118, header_top + 80, 9, 4, GOLD)
 
-# Achievement statement
+# Header text
+cx_text(header_top + 30, "RECORD OFFICIEL", font(15, bold=True), WHITE)
+cx_text(header_top + 55, "DE L'ÉCOLE", serif(36, bold=True), WHITE)
+cx_text(header_top + 105, "ÉDUCATION PHYSIQUE ET À LA SANTÉ",
+        font(11), BLUE_SOFT)
+
+# === MEDAL BADGE ===
+mx, my = W // 2, header_top + header_h + 75
+# Outer ring (light blue)
+d.ellipse([mx - 60, my - 60, mx + 60, my + 60], fill=BLUE_SOFT)
+# Inner blue circle
+d.ellipse([mx - 52, my - 52, mx + 52, my + 52], fill=BLUE)
+
+# Medal text
+cx_text(my - 28, "NOUVEAU", font(10, bold=True), BLUE_SOFT)
+cx_text(my - 12, "RECORD", serif(20, bold=True), WHITE)
+cx_text(my + 14, "DE L'ÉCOLE", font(10, bold=True), BLUE_SOFT)
+
+# Two gold ribbons hanging down
+ribbon_top = my + 50
+# Left ribbon
+d.polygon([(mx - 22, ribbon_top - 5), (mx - 8, ribbon_top - 5),
+           (mx - 8, ribbon_top + 45),
+           (mx - 15, ribbon_top + 35),
+           (mx - 22, ribbon_top + 45)], fill=GOLD)
+# Right ribbon
+d.polygon([(mx + 8, ribbon_top - 5), (mx + 22, ribbon_top - 5),
+           (mx + 22, ribbon_top + 45),
+           (mx + 15, ribbon_top + 35),
+           (mx + 8, ribbon_top + 45)], fill=GOLD)
+
+# === BODY ===
+y = my + 130
+cx_text(y, "C E   R E C O R D   E S T   D É T E N U   P A R",
+        font(11), INK_SOFT)
+
 y += 30
-cx_text(y, "pour avoir établi un nouveau record scolaire en", font(17), INK)
-y += 30
-cx_text(y, "POSITION DU TRÉPIED", font(24, bold=True), BLUE_DARK)
+cx_text(y, "Aaden", serif(72, bold=True), BLUE)
 
-# Time highlight box
-y += 50
-box_w, box_h = 280, 80
-bx0 = (W - box_w) // 2
-d.rounded_rectangle([bx0, y, bx0 + box_w, y + box_h], radius=12,
-                    fill=BLUE, outline=GOLD, width=3)
-cx_text(y + 10, "Temps réalisé", font(13, italic=True), GOLD_LIGHT)
-cx_text(y + 30, "4 minutes", font(34, bold=True), CREAM)
+# Underline with gold accent
+y += 88
+d.line([(120, y), (W - 120, y)], fill=GOLD_SOFT, width=1)
 
-# School & teacher
-y += box_h + 35
-cx_text(y, "École du Chemin-du-Roy", font(18, bold=True), INK)
+# Achievement
+y += 25
+cx_text(y, "a établi le record de l'école en", font(15), INK)
 y += 28
-cx_text(y, "sous la supervision de", font(14, italic=True), INK)
-y += 22
-cx_text(y, "Anne-Sophie", font(18, bold=True, italic=True), BLUE_DARK)
+cx_text(y, "POSITION TRÉPIED", font(20, bold=True), INK)
 
-# Date row
-y = H - 150
-d.line([(90, y), (W - 90, y)], fill=GOLD, width=1)
-# Date left
-d.text((100, y + 14), "Date", font=font(12, italic=True), fill=INK)
-d.text((100, y + 32), "5 mai 2026", font=font(16, bold=True), fill=BLUE_DARK)
-# Signature right
-sig_text = "Signature"
-bbox = d.textbbox((0, 0), sig_text, font=font(12, italic=True))
-d.text((W - 100 - (bbox[2] - bbox[0]), y + 14), sig_text,
-       font=font(12, italic=True), fill=INK)
-sig_name = "Anne-Sophie"
-bbox = d.textbbox((0, 0), sig_name, font=font(16, bold=True, italic=True))
-d.text((W - 100 - (bbox[2] - bbox[0]), y + 30), sig_name,
-       font=font(16, bold=True, italic=True), fill=BLUE_DARK)
+y += 32
+cx_text(y, "tenue sans interruption pendant", font(13), INK_SOFT)
 
-# Tiny seal bottom-center
-sx, sy = W // 2, H - 95
-d.ellipse([sx - 26, sy - 26, sx + 26, sy + 26], outline=GOLD, width=2)
-d.ellipse([sx - 20, sy - 20, sx + 20, sy + 20], fill=GOLD)
-star(sx, sy, 14, 6, 5, BLUE_DARK)
+# Big blue time box
+y += 25
+box_w, box_h = 280, 110
+bx0 = (W - box_w) // 2
+d.rectangle([bx0, y, bx0 + box_w, y + box_h], fill=BLUE)
+# Inner gold border
+d.rectangle([bx0 + 6, y + 6, bx0 + box_w - 6, y + box_h - 6],
+            outline=GOLD, width=2)
+
+# "4:00"
+fnt_time = serif(64, bold=True)
+bbox = d.textbbox((0, 0), "4:00", font=fnt_time)
+tw = bbox[2] - bbox[0]
+th = bbox[3] - bbox[1]
+d.text((W // 2 - tw // 2, y + 14), "4:00", font=fnt_time, fill=WHITE)
+cx_text(y + box_h - 24, "M I N U T E S", font(10, bold=True), GOLD_SOFT)
+
+# Performance pill
+y += box_h + 20
+pill_w, pill_h = 280, 30
+px0 = (W - pill_w) // 2
+d.rounded_rectangle([px0, y, px0 + pill_w, y + pill_h],
+                    radius=4, fill=BLUE_SOFT)
+cx_text(y + 8, "P E R F O R M A N C E   E X C E P T I O N N E L L E",
+        font(10, bold=True), BLUE)
+
+# === FOOTER: ENSEIGNANTE / DATE ===
+y += pill_h + 35
+# Two columns separated by a small circle in the middle
+col_y_label = y
+col_y_value = y + 22
+
+# Labels
+left_label = "ENSEIGNANTE"
+right_label = "DATE"
+fl = font(10, bold=True)
+bbox = d.textbbox((0, 0), left_label, font=fl)
+d.text((130, col_y_label), left_label, font=fl, fill=INK_SOFT)
+bbox = d.textbbox((0, 0), right_label, font=fl)
+rw = bbox[2] - bbox[0]
+d.text((W - 130 - rw, col_y_label), right_label, font=fl, fill=INK_SOFT)
+
+# Values
+fv = serif(20, bold=True)
+d.text((130, col_y_value), "Anne-Sophie", font=fv, fill=INK)
+bbox = d.textbbox((0, 0), "5 mai 2026", font=fv)
+rw = bbox[2] - bbox[0]
+d.text((W - 130 - rw, col_y_value), "5 mai 2026", font=fv, fill=INK)
+
+# Underlines under each value
+ul_y = col_y_value + 32
+d.line([(130, ul_y), (W // 2 - 30, ul_y)], fill=BLUE, width=1)
+d.line([(W // 2 + 30, ul_y), (W - 130, ul_y)], fill=BLUE, width=1)
+
+# Center small circle with arrow icon
+ccx, ccy = W // 2, ul_y
+d.ellipse([ccx - 18, ccy - 18, ccx + 18, ccy + 18],
+          fill=WHITE, outline=GOLD, width=1)
+# Down arrow inside
+d.line([(ccx, ccy - 7), (ccx, ccy + 6)], fill=BLUE, width=2)
+d.polygon([(ccx - 5, ccy + 1), (ccx + 5, ccy + 1), (ccx, ccy + 7)],
+          fill=BLUE)
+
+# School name at bottom
+y = ul_y + 30
+cx_text(y, "École du Chemin-du-Roy", serif(18, bold=True), BLUE)
 
 img.save("/home/user/Burnapp/certificat-aaden.png", "PNG", optimize=True)
 print(f"Saved: {W}x{H}")
